@@ -1,0 +1,66 @@
+.admin-translation {
+    border:1px dotted #36A6CA;
+}
+
+.admin-translation:hover {
+    border:1px dotted #52CA2F;
+}
+
+.admin-translation.hovered {
+    cursor:context-menu;
+}
+
+.popup {
+    position:fixed;
+    z-index:900;
+    height:auto;
+    left:50%;
+    width:500px;
+    margin-left:-250px;
+    background:#fff;
+    -webkit-box-shadow: 0 0 0 9999999px rgba(0,0,0,0.5);
+    box-shadow: 0 0 0 9999999px rgba(0,0,0,0.5);
+    top:10%;
+}
+
+.popup-title {
+    padding:20px 20px 0 20px;
+}
+
+.popup-body {
+    padding:10px 20px 30px 20px;
+}
+
+.popup-body > label {
+    display:block;
+    float:left;
+    width:18%;
+    margin:0 1%;
+}
+
+.popup-body > input {
+    display:block;
+    float:left;
+    width:78%;
+    margin:0 1%;
+}
+
+.popup-actions {
+    width:100%;
+    padding:10px 20px;
+    background:#969696;
+}
+
+.popup-actions > button {
+    display: block;
+    float:left;
+    width:18%;
+    margin:0 1%;
+}
+
+.popup > .popup-actions:after,
+.popup > .popup-body:after {
+    clear:both;
+    content:" ";
+    display: block;
+}

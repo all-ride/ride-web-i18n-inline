@@ -1,0 +1,16 @@
+{
+    "routes": [
+        {
+            "path": "/translation",
+            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "action": "getTranslation",
+            "id": "api.translation.get"
+        },
+        {
+            "path": "/translations",
+            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "action": "postTranslations",
+            "id": "api.translations.post"
+        }
+    ]
+}
