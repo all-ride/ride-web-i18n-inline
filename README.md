@@ -4,12 +4,14 @@ This module enables a quickedit feature to edit translateable labels on your web
 
 ### Setup
 
-At this moment you can just add this module in your ``modules`` folder (you can manually create this folder in the project root) and enable modules to load from this folder in ``parameters.php``.
+At this moment you can just add this module in your ``modules`` folder (you can manually create this folder in the project root).
 
 ```bash
 cd modules
 git clone https://github.com/all-ride/ride-web-i18n-quickadmin.git
 ```
+
+You might need to enable modules to load from this folder in ``parameters.php``.
 
 ```php
 // application/config/parameters.php:49
