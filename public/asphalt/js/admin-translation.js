@@ -19,7 +19,8 @@ $(document).ready(function() {
                 e.preventDefault();
                 saveTranslation();
             });
-            $('#cancel-translation').on('click', function() {
+            $('#cancel-translation').on('click', function(e) {
+                e.preventDefault();
                 hidePopup();
             });
             $('.popup').on('click', function(e) {
