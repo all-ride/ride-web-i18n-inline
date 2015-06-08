@@ -23,7 +23,9 @@ class AdminTranslator extends GenericTranslator {
             $translation = $default;
         }
 
-        $translation .= '&nbsp;<span class="admin-translation icon icon--pencil-square-o" title="Hold alt+click to edit ['.$key.']" data-key="'.$key.'" data-locale="'.$this->locale.'"></span>';
+        $keySlug = str_replace('.', '-', $key);
+
+        $translation = '<span class="admin-translation--'.$keySlug.'">'.$translation.'</span>&nbsp;<span class="admin-translation icon icon--globe" title="Hold alt+click to edit ['.$key.']" data-key="'.$key.'" data-locale="'.$this->locale.'" data-for="admin-translation--'.$keySlug.'"></span>';
 
         if ($translation === null || $vars === null) {
             return $translation;

@@ -44,8 +44,8 @@ class ApplicationListener {
             return;
         }
 
-        $view->addJavascript('js/admin-translation.js');
         $view->addStyle('css/admin-translation.css');
+        $view->addJavascript('js/admin-translation.js');
     }
 
 }

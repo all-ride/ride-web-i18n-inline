@@ -22,7 +22,7 @@ $(document).ready(function() {
             $('.popup').on('click', function(e) {
                 e.stopPropagation();
             });
-            $(document).on('click', function() {
+            $(document).on('click', function(e) {
                 hidePopup();
             });
             $(document).on('keydown', function(e) {
@@ -47,15 +47,10 @@ $(document).ready(function() {
                 });
 
                 $.post("/translations?key=" + elem.data('key') + "&locale=" + elem.data('locale'), {'translations' : data}, function(current) {
-                    elem.text(current);
+                    $("."+elem.data('for')).text(current);
                     hidePopup();
                 });
             }
         });
     });
-
-    $('.admin-translation').on('mouseleave', function(e) {
-        $(this).removeClass('hovered');
-    });
-
 });
