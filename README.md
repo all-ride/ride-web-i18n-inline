@@ -22,4 +22,4 @@ You might need to enable modules to load from this folder in ``parameters.php``.
 ),
 ```
 
-Now all translateable labels will be highlighted. By holding alt and clicking a label, you will open a popup in which you can edit the label for all translations.
+Now all translateable labels will be highlighted. By clicking a label, you will open a popup in which you can edit the label for all translations.
