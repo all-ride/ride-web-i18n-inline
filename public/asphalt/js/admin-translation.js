@@ -1,10 +1,6 @@
 $(document).ready(function() {
 
     $('.admin-translation').on('click', function(e) {
-        if (!e.altKey) {
-            return;
-        }
-
         e.stopPropagation();
         e.preventDefault();
         var elem = $(this);
@@ -56,14 +52,6 @@ $(document).ready(function() {
                 });
             }
         });
-    });
-
-    $('.admin-translation').on('mousemove', function(e) {
-        if (!e.altKey) {
-            return;
-        }
-
-        $(this).addClass('hovered');
     });
 
     $('.admin-translation').on('mouseleave', function(e) {

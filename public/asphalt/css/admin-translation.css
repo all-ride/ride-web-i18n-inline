@@ -1,13 +1,11 @@
 .admin-translation {
-    border:1px dotted #36A6CA;
+    font-size: 0.8em;
+    padding-bottom:0.2em;
+    cursor:pointer;
 }
 
 .admin-translation:hover {
-    border:1px dotted #52CA2F;
-}
-
-.admin-translation.hovered {
-    cursor:context-menu;
+    color:#101B59;
 }
 
 .popup {
