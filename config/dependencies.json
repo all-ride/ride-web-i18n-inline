@@ -19,6 +19,11 @@
                     ]
                 }
             ]
+        },
+        {
+            "interfaces": "ride\\library\\html\\table\\ArrayTable",
+            "class": "ride\\library\\html\\table\\FormTable",
+            "id": "quickadmin.i18n.formtable"
         }
     ]
 }
