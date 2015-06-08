@@ -1,10 +1,6 @@
 $(document).ready(function() {
 
     $('.admin-translation').on('click', function(e) {
-        if (!e.altKey) {
-            return;
-        }
-
         e.stopPropagation();
         e.preventDefault();
         var elem = $(this);
@@ -19,13 +15,14 @@ $(document).ready(function() {
                 e.preventDefault();
                 saveTranslation();
             });
-            $('#cancel-translation').on('click', function() {
+            $('#cancel-translation').on('click', function(e) {
+                e.preventDefault();
                 hidePopup();
             });
             $('.popup').on('click', function(e) {
                 e.stopPropagation();
             });
-            $(document).on('click', function() {
+            $(document).on('click', function(e) {
                 hidePopup();
             });
             $(document).on('keydown', function(e) {
@@ -50,23 +47,10 @@ $(document).ready(function() {
                 });
 
                 $.post("/translations?key=" + elem.data('key') + "&locale=" + elem.data('locale'), {'translations' : data}, function(current) {
-                    elem.text(current);
+                    $("."+elem.data('for')).text(current);
                     hidePopup();
                 });
             }
         });
     });
-
-    $('.admin-translation').on('mousemove', function(e) {
-        if (!e.altKey) {
-            return;
-        }
-
-        $(this).addClass('hovered');
-    });
-
-    $('.admin-translation').on('mouseleave', function(e) {
-        $(this).removeClass('hovered');
-    });
-
 });
