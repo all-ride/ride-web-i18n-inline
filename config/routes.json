@@ -9,7 +9,7 @@
         {
             "path": "/l10n/translation/save",
             "controller": "ride\\api\\controller\\AdminTranslatorController",
-            "action": "postTranslations",
+            "action": "postTranslation",
             "id": "l10n.api.translation.post"
         }
     ]
