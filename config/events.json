@@ -1,8 +1,14 @@
 {
+    "app.dispatch.pre": [
+        {
+            "interface": "ride\\I18nQuickAdminModule",
+            "method" : "init"
+        }
+    ],
     "app.response.pre": [
         {
-            "interface": "ride\\listener\\ApplicationListener",
-            "method": "handleResponseMessages"
+            "interface": "ride\\I18nQuickAdminModule",
+            "method" : "loadScripts"
         }
     ]
 }

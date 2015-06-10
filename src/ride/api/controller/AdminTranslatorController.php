@@ -10,6 +10,7 @@ use ride\library\validation\exception\ValidationException;
 
 use ride\web\base\controller\AbstractController;
 use ride\web\base\form\AssetComponent;
+use ride\library\security\SecurityManager;
 
 class AdminTranslatorController extends AbstractController {
 
@@ -30,7 +31,7 @@ class AdminTranslatorController extends AbstractController {
         $this->setTemplateView('popup/translationPopup', array('translations' => $translations, 'key' => $key));
     }
 
-    public function postTranslations(I18n $i18n) {
+    public function postTranslation(I18n $i18n) {
         $key = $this->request->getQueryParameter('key');
         $locale = $this->request->getQueryParameter('locale');
         $translations = $_POST['translations'];
