@@ -10,7 +10,7 @@ Only thing left to do is to set role permissions, go to the top right user menu,
 
 ### Usage
 
-You can now toggle the translator in the top manu in the backend.
+You can now toggle the translator in the top menu in the backend.
 
 ### Download
 
