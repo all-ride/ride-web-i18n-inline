@@ -12,8 +12,15 @@ use ride\web\base\controller\AbstractController;
 use ride\web\base\form\AssetComponent;
 use ride\library\security\SecurityManager;
 
+/**
+ * AdminTranslatorController
+ */
 class AdminTranslatorController extends AbstractController {
 
+    /**
+     * @param I18n $i18n
+     * @return View
+     */
     public function getTranslation(I18n $i18n) {
         $translations = array();
         $locales = $i18n->getLocales();
@@ -31,6 +38,10 @@ class AdminTranslatorController extends AbstractController {
         $this->setTemplateView('popup/translationPopup', array('translations' => $translations, 'key' => $key));
     }
 
+    /**
+     * @param I18n $i18n
+     * @return JSON
+     */
     public function postTranslation(I18n $i18n) {
         $key = $this->request->getQueryParameter('key');
         $locale = $this->request->getQueryParameter('locale');
@@ -46,6 +57,22 @@ class AdminTranslatorController extends AbstractController {
 
         echo $i18n->getTranslator($locale)->getTranslation($key);
         return;
+    }
+
+    /**
+     * @param OrmManager $om
+     */
+    public function toggle(OrmManager $om) {
+        $user = $this->getUser();
+        $toggle = !$user->getPreference('translator');
+        $userModel = $om->getUserModel();
+
+        $user->setPreference('translator', $toggle);
+        $userModel->save($user);
+
+        $redirect = explode("?", $this->request->getQueryParameter('referer'));
+        $redirect = $redirect[0];
+        $this->response->setRedirect($redirect);
     }
 
 }

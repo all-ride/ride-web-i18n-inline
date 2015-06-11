@@ -1,6 +1,6 @@
 This module enables a quickedit feature to edit translateable labels on your website instead of having to edit translation files.
 
-**This module should only be used in a development environment**
+**Important**: This module adds extra code to all translations, this might result in strange behaviour. Be careful when using and be aware some errors may occure in the application flow.
 
 ### Setup
 
@@ -8,7 +8,11 @@ This modules works with API calls on the ``/l10n`` endpoint. So you probably wan
 
 Only thing left to do is to set role permissions, go to the top right user menu, navigate to "Users", press the array next to "Add new user" and choose "Manage roles". Add the same path (``/l10n**``) for each role which should be able to use this module.
 
-### Composer
+### Usage
+
+You can now toggle the translator in the top manu in the backend.
+
+### Download
 
 At this moment you can just add this module in your ``modules`` folder (you can manually create this folder in the project root).
 

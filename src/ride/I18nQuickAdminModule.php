@@ -9,10 +9,15 @@ use ride\library\dependency\Dependency,
     ride\library\dependency\DependencyCallArgument,
     ride\library\dependency\DependencyContainer,
     ride\library\dependency\DependencyInjector;
+use ride\library\http\Request;
+use ride\web\base\menu\MenuItem,
+    ride\web\base\menu\Menu;
 use ride\web\mvc\view\TemplateView;
+use ride\web\WebApplication;
+use ride\application\orm\OrmManager;
 
 /**
- * @Class I18nQuickAdminModule
+ * I18nQuickAdminModule
  */
 class I18nQuickAdminModule {
 
@@ -23,8 +28,9 @@ class I18nQuickAdminModule {
      *
      * Initialise the module
      */
-    public function init(Event $event, SecurityManager $securityManager, DependencyInjector $dependencyInjector) {
-        if (!$securityManager->isPathAllowed('/l10n**')) {
+    public function init(Event $event, SecurityManager $securityManager, DependencyInjector $dependencyInjector, Request $request) {
+        $user = $securityManager->getUser();
+        if (!$securityManager->isPathAllowed('/l10n**') || ($user && !$user->getPreference('translator'))) {
             return;
         }
 
@@ -74,5 +80,29 @@ class I18nQuickAdminModule {
         $i18n = $dependencyInjector->get('ride\library\i18n\I18n');
         $tm = $dependencyInjector->get('ride\library\i18n\translator\AdminTranslatorManager');
         $i18n->setTranslatorManager($tm);
+    }
+
+    /**
+     * @param Event $event The event
+     * @param Request $request The request
+     * @param SecurityManager $securityManager The securityManager
+     */
+    public function loadMenu(Event $event, Request $request, SecurityManager $securityManager,WebApplication $web) {
+        if (!$securityManager->isPathAllowed('/l10n**')) {
+            return;
+        }
+
+        $taskbar = $event->getArgument('taskbar');
+        $applicationMenu = $taskbar->getApplicationsMenu();
+        $referer = '?referer=' . urlencode($request->getUrl());
+        $user = $securityManager->getUser();
+        $toggle = $user->getPreference('translator') ? "disable" : "enable";
+        $url = $web->getUrl('l10n.api.translator.toggle', array()) . $referer;
+
+        $menuItem = new MenuItem();
+        $menuItem->setTranslation('translator.toggle.' . $toggle);
+        $menuItem->setUrl($url);
+        $menuItem->setWeight(100);
+        $applicationMenu->addMenuItem($menuItem);
     }
 }

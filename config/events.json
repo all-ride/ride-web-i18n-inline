@@ -10,5 +10,11 @@
             "interface": "ride\\I18nQuickAdminModule",
             "method" : "loadScripts"
         }
+    ],
+    "app.taskbar.pre": [
+        {
+            "interface": "ride\\I18nQuickAdminModule",
+            "method": "loadMenu"
+        }
     ]
 }

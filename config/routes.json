@@ -11,6 +11,12 @@
             "controller": "ride\\api\\controller\\AdminTranslatorController",
             "action": "postTranslation",
             "id": "l10n.api.translation.post"
+        },
+        {
+            "path": "/l10n/translator/toggle",
+            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "action": "toggle",
+            "id": "l10n.api.translator.toggle"
         }
     ]
 }
