@@ -46,13 +46,13 @@ class ApplicationListener {
             return;
         }
 
-        $taskbar = $event->getArgument('taskbar');
-        $applicationMenu = $taskbar->getApplicationsMenu();
-        $referer = '?referer=' . urlencode($request->getUrl());
         $user = $securityManager->getUser();
         $toggle = $user->getPreference('translator') ? "disable" : "enable";
+        $referer = '?referer=' . urlencode($request->getUrl());
         $url = $web->getUrl('l10n.api.translator.toggle', array()) . $referer;
 
+        $taskbar = $event->getArgument('taskbar');
+        $applicationMenu = $taskbar->getApplicationsMenu();
         $menuItem = new MenuItem();
         $menuItem->setTranslation('translator.toggle.' . $toggle);
         $menuItem->setUrl($url);
