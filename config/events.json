@@ -1,19 +1,13 @@
 {
-    "app.dispatch.pre": [
-        {
-            "interface": "ride\\I18nQuickAdminModule",
-            "method" : "init"
-        }
-    ],
     "app.response.pre": [
         {
-            "interface": "ride\\I18nQuickAdminModule",
+            "interface": "ride\\library\\i18nquickadmin\\listener\\ApplicationListener",
             "method" : "loadScripts"
         }
     ],
     "app.taskbar.pre": [
         {
-            "interface": "ride\\I18nQuickAdminModule",
+            "interface": "ride\\library\\i18nquickadmin\\listener\\ApplicationListener",
             "method": "loadMenu"
         }
     ]

@@ -1,6 +1,6 @@
 <?php
 
-namespace ride\api\controller;
+namespace ride\library\i18nquickadmin\api\controller;
 
 use ride\library\html\Pagination;
 use ride\library\i18n\I18n;

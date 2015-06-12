@@ -2,19 +2,19 @@
     "routes": [
         {
             "path": "/l10n/translation",
-            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
             "action": "getTranslation",
             "id": "l10n.api.translatio.get"
         },
         {
             "path": "/l10n/translation/save",
-            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
             "action": "postTranslation",
             "id": "l10n.api.translation.post"
         },
         {
             "path": "/l10n/translator/toggle",
-            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
             "action": "toggle",
             "id": "l10n.api.translator.toggle"
         }
