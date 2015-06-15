@@ -5,7 +5,7 @@ $(document).ready(function() {
         e.preventDefault();
         var elem = $(this);
 
-        $.get("/translation?key=" + elem.data('key'), function(data) {
+        $.get("/l10n/translation?key=" + elem.data('key'), function(data) {
             $(document.body).prepend($.parseHTML(data));
             var inputs = $('#popup-translation input');
             $(inputs[0]).focus();
@@ -46,7 +46,7 @@ $(document).ready(function() {
                     data[input.name] = input.value;
                 });
 
-                $.post("/translations?key=" + elem.data('key') + "&locale=" + elem.data('locale'), {'translations' : data}, function(current) {
+                $.post("/l10n/translation/save?key=" + elem.data('key') + "&locale=" + elem.data('locale'), {'translations' : data}, function(current) {
                     $("."+elem.data('for')).text(current);
                     hidePopup();
                 });

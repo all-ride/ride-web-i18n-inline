@@ -2,7 +2,7 @@
     "dependencies": [
         {
             "interfaces": "ride\\library\\i18n\\translator\\TranslatorManager",
-            "class": "ride\\library\\i18n\\translator\\AdminTranslatorManager",
+            "class": "ride\\library\\i18nquickadmin\\translator\\AdminTranslatorManager",
             "id": "generic",
             "calls": [
                 {
@@ -14,6 +14,13 @@
                             "properties": {
                                 "interface": "ride\\library\\i18n\\translator\\io\\TranslationIO",
                                 "id": "%system.l10n.io.default|json%"
+                            }
+                        },
+                        {
+                            "name": "injector",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "ride\\library\\dependency\\DependencyInjector"
                             }
                         }
                     ]

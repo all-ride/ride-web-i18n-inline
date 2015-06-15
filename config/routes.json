@@ -1,16 +1,22 @@
 {
     "routes": [
         {
-            "path": "/translation",
-            "controller": "ride\\api\\controller\\AdminTranslatorController",
+            "path": "/l10n/translation",
+            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
             "action": "getTranslation",
-            "id": "api.translation.get"
+            "id": "l10n.api.translatio.get"
         },
         {
-            "path": "/translations",
-            "controller": "ride\\api\\controller\\AdminTranslatorController",
-            "action": "postTranslations",
-            "id": "api.translations.post"
+            "path": "/l10n/translation/save",
+            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
+            "action": "postTranslation",
+            "id": "l10n.api.translation.post"
+        },
+        {
+            "path": "/l10n/translator/toggle",
+            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
+            "action": "toggle",
+            "id": "l10n.api.translator.toggle"
         }
     ]
 }
