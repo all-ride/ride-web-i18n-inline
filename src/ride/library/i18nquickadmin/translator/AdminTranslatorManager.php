@@ -37,7 +37,7 @@ class AdminTranslatorManager extends GenericTranslatorManager {
     protected function createTranslator(Locale $locale) {
         $sm = $this->injector->get('ride\library\security\SecurityManager');
 
-        if ($sm->getUser()->getPreference('translator')) {
+        if ($sm->getUser() && $sm->getUser()->getPreference('translator')) {
             return new AdminTranslator($locale, $this->io);
         }
 
