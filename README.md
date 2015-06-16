@@ -1,6 +1,6 @@
 This module enables a quickedit feature to edit translateable labels on your website instead of having to edit translation files.
 
-**Important**: This module adds extra code to all translations, this might result in strange behaviour. Be careful when using and be aware some errors may occure in the application flow.
+**Important**: This module adds extra markup to all translations, this might result in strange behaviour. Be careful when using and be aware some errors may occure in the application flow.
 
 ### Setup
 
