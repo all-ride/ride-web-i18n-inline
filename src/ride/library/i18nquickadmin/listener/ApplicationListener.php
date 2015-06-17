@@ -47,9 +47,6 @@ class ApplicationListener {
             return;
         }
 
-
-
-
         $toggle = $user->getPreference('translator') ? "disable" : "enable";
         $referer = '?referer=' . urlencode($request->getUrl());
         $url = $web->getUrl('l10n.api.translator.toggle', array()) . $referer;
