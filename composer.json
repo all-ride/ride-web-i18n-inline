@@ -1,5 +1,5 @@
 {
-    "name": "ride/i18nquickadmin",
+    "name": "ride/web-i18nquickadmin",
     "description": "Quick label translator for admins",
     "license": "MIT",
     "version": "0.1.0",
