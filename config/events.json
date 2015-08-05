@@ -1,0 +1,14 @@
+{
+    "app.response.pre": [
+        {
+            "interface": "ride\\library\\i18nquickadmin\\listener\\ApplicationListener",
+            "method" : "loadScripts"
+        }
+    ],
+    "app.taskbar.pre": [
+        {
+            "interface": "ride\\library\\i18nquickadmin\\listener\\ApplicationListener",
+            "method": "loadMenu"
+        }
+    ]
+}
