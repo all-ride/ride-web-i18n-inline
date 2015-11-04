@@ -16,6 +16,7 @@ use ride\web\base\menu\Menu;
 use ride\web\base\menu\MenuItem;
 use ride\web\mvc\view\TemplateView;
 
+
 /**
  * ApplicationListener
  */
@@ -26,15 +27,15 @@ class I18nApplicationListener {
      *
      * @param Event $event
      */
-    public function loadScripts(Event $event) {
+    public function loadScripts(Event $event, Request $request) {
         $view = $event->getArgument('web')->getResponse()->getView();
 
         if (!($view instanceof TemplateView)) {
             return;
         }
 
-        $view->addStyle('css/inline-translator.css');
-        $view->addJavascript('js/inline-translator.js');
+        $view->addStyle($request->getBaseUrl().'/css/inline-translator.css');
+        $view->addJavascript($request->getBaseUrl().'/js/inline-translator.js');
     }
 
     /**
