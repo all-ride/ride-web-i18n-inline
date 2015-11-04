@@ -1,13 +1,13 @@
 {
     "app.response.pre": [
         {
-            "interface": "ride\\library\\i18nquickadmin\\listener\\ApplicationListener",
+            "interface": "ride\\web\\listener\\I18nApplicationListener",
             "method" : "loadScripts"
         }
     ],
     "app.taskbar.pre": [
         {
-            "interface": "ride\\library\\i18nquickadmin\\listener\\ApplicationListener",
+            "interface": "ride\\web\\listener\\I18nApplicationListener",
             "method": "loadMenu"
         }
     ]

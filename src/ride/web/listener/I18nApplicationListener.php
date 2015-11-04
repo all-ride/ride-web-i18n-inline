@@ -1,30 +1,30 @@
 <?php
 
-namespace ride\library\i18nquickadmin\listener;
+namespace ride\web\listener;
 
-use ride\library\security\SecurityManager;
-use ride\library\event\Event;
-use ride\library\dependency\Dependency,
-    ride\library\dependency\DependencyCall,
-    ride\library\dependency\DependencyCallArgument,
-    ride\library\dependency\DependencyContainer,
-    ride\library\dependency\DependencyInjector;
-use ride\library\http\Request;
-use ride\web\base\menu\MenuItem,
-    ride\web\base\menu\Menu;
-use ride\web\mvc\view\TemplateView;
-use ride\web\WebApplication;
 use ride\application\orm\OrmManager;
+use ride\library\dependency\Dependency;
+use ride\library\dependency\DependencyCall;
+use ride\library\dependency\DependencyCallArgument;
+use ride\library\dependency\DependencyContainer;
+use ride\library\dependency\DependencyInjector;
+use ride\library\event\Event;
+use ride\library\http\Request;
+use ride\library\security\SecurityManager;
+use ride\web\WebApplication;
+use ride\web\base\menu\Menu;
+use ride\web\base\menu\MenuItem;
+use ride\web\mvc\view\TemplateView;
 
 /**
  * ApplicationListener
  */
-class ApplicationListener {
+class I18nApplicationListener {
 
     /**
-     * @param Event $event
+     * Load the module CSS and JS
      *
-     * load the module CSS and JS
+     * @param Event $event
      */
     public function loadScripts(Event $event) {
         $view = $event->getArgument('web')->getResponse()->getView();
@@ -32,8 +32,9 @@ class ApplicationListener {
         if (!($view instanceof TemplateView)) {
             return;
         }
-        $view->addStyle('css/admin-translation.css');
-        $view->addJavascript('js/admin-translation.js');
+
+        $view->addStyle('css/inline-translator.css');
+        $view->addJavascript('js/inline-translator.js');
     }
 
     /**
@@ -41,7 +42,7 @@ class ApplicationListener {
      * @param Request $request The request
      * @param SecurityManager $securityManager The securityManager
      */
-    public function loadMenu(Event $event, Request $request, SecurityManager $securityManager,WebApplication $web) {
+    public function loadMenu(Event $event, Request $request, SecurityManager $securityManager, WebApplication $web) {
         $user = $securityManager->getUser();
         if (!$user || !$securityManager->isPathAllowed('/l10n**')) {
             return;

@@ -1,0 +1,96 @@
+.admin-translation {
+    color:#2980b9;
+    cursor:pointer;
+}
+
+.admin-translation:hover {
+    color:#20638f;
+}
+
+.translator--inline.popup {
+    position:fixed;
+    z-index:900;
+    height:auto;
+    left:50%;
+    width:500px;
+    margin-left:-250px;
+    background:#fff;
+    -webkit-box-shadow: 0 0 0 9999999px rgba(0,0,0,0.5);
+    box-shadow: 0 0 0 9999999px rgba(0,0,0,0.5);
+    top:10%;
+
+    color: #535455;
+    font-family: Roboto,sans-serif;
+    font-size: 14px;
+    font-size: .875rem;
+    font-weight: 300;
+    line-height: 1.429;
+}
+
+.translator--inline .popup-title {
+    padding:20px 20px 0 20px;
+}
+
+.translator--inline .popup-body {
+    padding:10px 20px 30px 20px;
+}
+
+.translator--inline .popup-body > label {
+    display:block;
+    float:left;
+    width:18%;
+    margin:0 1%;
+}
+
+.translator--inline .popup-body > input {
+    display:block;
+    float:left;
+    width:78%;
+    margin:0 1%;
+}
+
+.translator--inline .popup-actions {
+    width:100%;
+    padding:10px 20px;
+    background:#969696;
+}
+
+.translator--inline .popup-actions > button {
+    display: block;
+    float:left;
+    width:18%;
+    margin:0 1%;
+}
+
+.translator--inline.popup > .popup-actions:after,
+.translator--inline.popup > .popup-body:after {
+    clear:both;
+    content:" ";
+    display: block;
+}
+
+.translator--inline.popup .btn.btn--brand, .btn--brand:visited {
+  color: #fff;
+  background-color: #2980b9;
+  border-color: #20638f;
+}
+
+.translator--inline.popup .btn, .translator--inline .form__btn {
+  background-color: #535455;
+  border-color: #535455;
+  transition: background 100ms ease-in-out,border 100ms ease-in-out;
+  display: inline-block;
+  padding: 10px 20px;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  border-radius: 3px;
+  color: #fff;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.translator--inline.popup button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}

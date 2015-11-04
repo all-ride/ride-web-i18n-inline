@@ -1,4 +1,4 @@
-# ride/web-i18nquickadmin
+# ride/web-i18n-inline
 
 This module enables a quickedit feature to edit translateable labels on your website instead of having to edit translation files.
 
