@@ -59,7 +59,7 @@ class I18nRestController extends AbstractController {
             );
         }
 
-        $this->setTemplateView('popup/translationPopup', array(
+        $this->setTemplateView('popup/translator.popup', array(
             'translations' => $translations,
             'key' => $key)
         );

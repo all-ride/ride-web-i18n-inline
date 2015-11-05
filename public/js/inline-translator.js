@@ -91,7 +91,7 @@ var TranslatorPopup = {
 $(document).ready(function() {
     InlineTranslator.init('/l10n');
 
-    $('.admin-translation').on('click', function(e) {
+    $('mark.inline__translator--toggle').on('click', function(e) {
         var elem = $(this);
         e.stopPropagation();
         e.preventDefault();

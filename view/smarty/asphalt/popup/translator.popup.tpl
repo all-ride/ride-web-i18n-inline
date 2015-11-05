@@ -1,5 +1,5 @@
 
-<form class="translator--inline popup" id="popup-translation">
+<form class="inline__translator popup" id="popup-translation">
     <h3 class="popup-title">Edit [{$key}]</h3>
 
     <div class="popup-body">
