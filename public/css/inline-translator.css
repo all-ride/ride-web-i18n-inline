@@ -1,13 +1,19 @@
-.admin-translation {
+mark.inline__translator {
+    background:inherit;
+    color:inherit;
+    font-weight: inherit;
+}
+
+mark.inline__translator--toggle {
     color:#2980b9;
     cursor:pointer;
 }
 
-.admin-translation:hover {
+mark.inline__translator--toggle:hover {
     color:#20638f;
 }
 
-.admintrans.popup {
+.inline__translator.popup {
     position:fixed;
     z-index:900;
     height:auto;
@@ -27,55 +33,55 @@
     line-height: 1.429;
 }
 
-.admintrans .popup-title {
+.inline__translator .popup-title {
     padding:20px 20px 0 20px;
 }
 
-.admintrans .popup-body {
+.inline__translator .popup-body {
     padding:10px 20px 30px 20px;
 }
 
-.admintrans .popup-body > label {
+.inline__translator .popup-body > label {
     display:block;
     float:left;
     width:18%;
     margin:0 1%;
 }
 
-.admintrans .popup-body > input {
+.inline__translator .popup-body > input {
     display:block;
     float:left;
     width:78%;
     margin:0 1%;
 }
 
-.admintrans .popup-actions {
+.inline__translator .popup-actions {
     width:100%;
     padding:10px 20px;
     background:#969696;
 }
 
-.admintrans .popup-actions > button {
+.inline__translator .popup-actions > button {
     display: block;
     float:left;
     width:18%;
     margin:0 1%;
 }
 
-.admintrans.popup > .popup-actions:after,
-.admintrans.popup > .popup-body:after {
+.inline__translator.popup > .popup-actions:after,
+.inline__translator.popup > .popup-body:after {
     clear:both;
     content:" ";
     display: block;
 }
 
-.admintrans.popup .btn.btn--brand, .btn--brand:visited {
+.inline__translator.popup .btn.btn--brand, .btn--brand:visited {
   color: #fff;
   background-color: #2980b9;
   border-color: #20638f;
 }
 
-.admintrans.popup .btn, .admintrans .form__btn {
+.inline__translator.popup .btn, .inline__translator .form__btn {
   background-color: #535455;
   border-color: #535455;
   transition: background 100ms ease-in-out,border 100ms ease-in-out;
@@ -89,7 +95,7 @@
   font-weight: 700;
 }
 
-.admintrans.popup button, input, select, textarea {
+.inline__translator.popup button, input, select, textarea {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;

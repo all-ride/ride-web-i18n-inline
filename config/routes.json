@@ -1,22 +1,25 @@
 {
     "routes": [
         {
-            "path": "/l10n/translation",
-            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
+            "path": "/l10n/translation/%key%",
+            "controller": "ride\\web\\rest\\controller\\I18nRestController",
             "action": "getTranslation",
-            "id": "l10n.api.translatio.get"
+            "id": "l10n.api.translation.get",
+            "methods": ["get"]
         },
         {
-            "path": "/l10n/translation/save",
-            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
+            "path": "/l10n/translation/%locale%/%key%",
+            "controller": "ride\\web\\rest\\controller\\I18nRestController",
             "action": "postTranslation",
-            "id": "l10n.api.translation.post"
+            "id": "l10n.api.translation.post",
+            "methods": ["post"]
         },
         {
             "path": "/l10n/translator/toggle",
-            "controller": "ride\\library\\i18nquickadmin\\api\\controller\\AdminTranslatorController",
-            "action": "toggle",
-            "id": "l10n.api.translator.toggle"
+            "controller": "ride\\web\\rest\\controller\\I18nRestController",
+            "action": "toggleTranslator",
+            "id": "l10n.api.translator.toggle",
+            "methods": ["get"]
         }
     ]
 }
