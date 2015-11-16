@@ -66,7 +66,7 @@ var TranslatorPopup = {
      */
     open: function(elem, html) {
         var self = this;
-        self.elem = elem;
+        this.elem = elem;
         $(document.body).prepend($.parseHTML(html));
 
         // Clicking save saves and closes the popup
