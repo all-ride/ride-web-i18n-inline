@@ -118,7 +118,7 @@ var TranslatorPopup = {
             data[input.name] = input.value;
         });
 
-        // Post the data
+        // Post the data and set the label with the current translation
         InlineTranslator.post(elem.data('locale'), elem.data('key'), {'translations' : data}).success(function(response) {
             $("." + elem.data('for')).text(response.translation);
         });
