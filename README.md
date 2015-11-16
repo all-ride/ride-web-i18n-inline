@@ -26,10 +26,10 @@ You might need to enable modules to load from this folder in ``parameters.php``.
 
 ### Setup
 
-This modules works with API calls on the ``/l10n`` endpoint. So you probably want to secure this path. Go to the top right user menu and navigate to "access control". here you can secure the path by adding ``/l10n**`` in the list.
+This modules works with API calls on the ``/l10n`` endpoint. So you want to secure this path. Go to the top right user menu and navigate to "access control". Here you can secure the path by adding ``/l10n**`` in the list.
 
-Only thing left to do is to set role permissions, go to the top right user menu, navigate to "Users", press the array next to "Add new user" and choose "Manage roles". Add the same path (``/l10n**``) for each role which should be able to use this module.
+Only thing left to do is to set role permissions, go to the top right user menu, navigate to "Users", press the arrow next to "Add new user" and choose "Manage roles". Add the same path (``/l10n**``) for each role which should be able to use this module.
 
 ### Usage
 
-You can now toggle the translator in the top menu in the backend. All translateable labels will now be highlighted. By clicking a label, you will open a popup in which you can edit the label for all translations.
+You can now toggle the translator in the top menu in the backend. All translateable labels will be highlighted. By clicking a label,  a popup will open in which you can edit the label for all translations.
