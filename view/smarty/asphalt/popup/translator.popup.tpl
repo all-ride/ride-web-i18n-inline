@@ -1,6 +1,6 @@
 
 <form class="inline__translator popup" id="popup-translation">
-    <h3 class="popup-title">Edit [{$key}]</h3>
+    <h3 class="popup-title">Edit <em>{$key}</em></h3>
 
     <div class="popup-body">
         {foreach $translations as $translation}
