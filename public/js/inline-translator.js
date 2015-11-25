@@ -111,7 +111,7 @@ var TranslatorPopup = {
      */
     save: function() {
         var data = {},
-            self = this;
+            elem = this.elem;
 
         // Create a data array for all locale inputs
         $.each(this.inputs, function(key, input) {
@@ -119,8 +119,8 @@ var TranslatorPopup = {
         });
 
         // Post the data
-        InlineTranslator.post(this.elem.data('locale'), this.elem.data('key'), {'translations' : data}).success(function(response) {
-            $("." + self.elem.data('for')).text(response.translation);
+        InlineTranslator.post(elem.data('locale'), elem.data('key'), {'translations' : data}).success(function(response) {
+            $("." + elem.data('for')).text(response.translation);
         });
     },
 
