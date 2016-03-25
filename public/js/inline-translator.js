@@ -145,7 +145,7 @@ var TranslatorPopup = {
 
 $(document).ready(function() {
     // Initialize the translator
-    InlineTranslatorAPI.init('/l10n');
+    InlineTranslatorAPI.init('/api/v1/i18n');
 
     // Add click events to all translateable elements
     $('mark.inline__translator--toggle').on('click', function(e) {

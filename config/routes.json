@@ -1,24 +1,24 @@
 {
     "routes": [
         {
-            "path": "/l10n/translation/%key%",
+            "path": "api/v1/i18n/translation/%key%",
             "controller": "ride\\web\\api\\controller\\I18nApiController",
             "action": "getTranslation",
-            "id": "l10n.api.translation.get",
+            "id": "api.i18n.translation.get",
             "methods": ["get"]
         },
         {
-            "path": "/l10n/translation/%locale%/%key%",
+            "path": "api/v1/i18n/translation/%locale%/%key%",
             "controller": "ride\\web\\api\\controller\\I18nApiController",
             "action": "postTranslation",
-            "id": "l10n.api.translation.post",
+            "id": "api.i18n.translation.post",
             "methods": ["post"]
         },
         {
-            "path": "/l10n/translator/toggle",
+            "path": "api/v1/i18n/translator/toggle",
             "controller": "ride\\web\\api\\controller\\I18nApiController",
             "action": "toggleTranslator",
-            "id": "l10n.api.translator.toggle",
+            "id": "api.i18n.translator.toggle",
             "methods": ["get"]
         }
     ]

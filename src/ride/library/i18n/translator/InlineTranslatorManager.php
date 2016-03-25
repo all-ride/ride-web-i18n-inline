@@ -35,10 +35,18 @@ class InlineTranslatorManager extends GenericTranslatorManager {
     }
 
     /**
+     * Get the security manager
+     * @return SecurityManager
+     */
+    protected function getSecurityManager() {
+        return $this->dependencyInjector->get('ride\library\security\SecurityManager');
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function createTranslator(Locale $locale) {
-        $securityManager = $this->dependencyInjector->get('ride\library\security\SecurityManager');
+        $securityManager = $this->getSecurityManager();
 
         // If the user is logged in, and its translator preference is enabled, use the InlineTranslator
         if ($securityManager->getUser() && $securityManager->getUser()->getPreference('translator')) {
