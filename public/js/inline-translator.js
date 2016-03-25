@@ -2,7 +2,7 @@
 /**
  * Translator service to communicate with the API
  */
-var InlineTranslator = {
+var InlineTranslatorAPI = {
 
     /**
      * @var {string} base The API base URL
@@ -118,8 +118,8 @@ var TranslatorPopup = {
             data[input.name] = input.value;
         });
 
-        // Post the data
-        InlineTranslator.post(elem.data('locale'), elem.data('key'), {'translations' : data}).success(function(response) {
+        // Post the data and set the label with the current translation
+        InlineTranslatorAPI.post(elem.data('locale'), elem.data('key'), {'translations' : data}).success(function(response) {
             $("." + elem.data('for')).text(response.translation);
         });
     },
@@ -145,7 +145,7 @@ var TranslatorPopup = {
 
 $(document).ready(function() {
     // Initialize the translator
-    InlineTranslator.init('/l10n');
+    InlineTranslatorAPI.init('/api/v1/i18n');
 
     // Add click events to all translateable elements
     $('mark.inline__translator--toggle').on('click', function(e) {
@@ -154,7 +154,7 @@ $(document).ready(function() {
         var elem = $(this);
 
         // Get the translation popup for this element's key
-        InlineTranslator.get(elem.data('key')).success(function(html) {
+        InlineTranslatorAPI.get(elem.data('key')).success(function(html) {
             TranslatorPopup.open(elem, html);
         });
     });

@@ -48,26 +48,25 @@ class I18nApplicationListener {
      * @param SecurityManager $securityManager The securityManager
      */
     public function loadMenu(Event $event, Request $request, SecurityManager $securityManager, WebApplication $web) {
-        // Check for the /l10n** permission on the logged in user
         $user = $securityManager->getUser();
-        if (!$user || !$securityManager->isPathAllowed('/l10n**')) {
+        if (!$user || !$securityManager->isPermissionGranted('permission.i18n.inline.translate')) {
             return;
         }
 
-        // Check the current translator preference
-        $toggle = $user->getPreference('translator') ? "disable" : "enable";
-        $referer = '?referer=' . urlencode($request->getUrl());
-
         // Create the URL
-        $url = $web->getUrl('l10n.api.translator.toggle', array()) . $referer;
+        $referer = '?referer=' . urlencode($request->getUrl());
+        $url = $web->getUrl('api.i18n.translator.toggle', array()) . $referer;
 
         // Create the menu item
+        $taskbar = $event->getArgument('taskbar');
+        $applicationMenu = $taskbar->getApplicationsMenu();
         $menuItem = new MenuItem();
+        $toggle = $user->getPreference('translator') ? "disable" : "enable";
+
         $menuItem->setTranslation('translator.toggle.' . $toggle);
         $menuItem->setUrl($url);
         $menuItem->setWeight(100);
-        $taskbar = $event->getArgument('taskbar');
-        $applicationMenu = $taskbar->getApplicationsMenu();
+
         $applicationMenu->addMenuItem($menuItem);
     }
 }

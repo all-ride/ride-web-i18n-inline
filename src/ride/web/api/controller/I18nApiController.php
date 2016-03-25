@@ -1,6 +1,6 @@
 <?php
 
-namespace ride\web\rest\controller;
+namespace ride\web\api\controller;
 
 use ride\library\i18n\I18n;
 use ride\library\orm\OrmManager;
@@ -12,7 +12,7 @@ use ride\web\base\controller\AbstractController;
  *
  * This controller exposes API calls to manage inline translations
  */
-class I18nRestController extends AbstractController {
+class I18nApiController extends AbstractController {
 
     /**
      * The i18n facade
