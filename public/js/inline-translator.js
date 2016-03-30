@@ -109,14 +109,55 @@ var Translation = {
     }
 };
 
+/**
+ * @type {Object}
+ */
 var TranslationCollection = {
+    /**
+     * A collection of all avaiable translations
+     * @type {Object}
+     */
     'translations': {},
+
+    /**
+     * The DOM element containing the translation list
+     * @type {DOMElement}
+     */
     'el': null,
+
+    /**
+     * The DOM element containing the edit form
+     * @type {DOMElement}
+     */
     'form': null,
+
+    /**
+     * The DOM element containing the edit form rows
+     * @type {DOMElement}
+     */
     'rows': null,
+
+    /**
+     * The DOM element containing the edit form actions
+     * @type {DOMElement}
+     */
+    'formActions': null,
+
+    /**
+     * The translation which is currently edited
+     * @type {Translation}
+     */
     'translationEdit': null,
+
+    /**
+     * The promise which is resolved after successfull loading of a translation
+     * @type {Promise}
+     */
     'promise': null,
 
+    /**
+     * Initialize the TranslationCollection
+     */
     'init': function() {
         var translation = null,
             $labels = $('mark.inline_translation'),
@@ -158,6 +199,10 @@ var TranslationCollection = {
         $('body').append(this.renderList());
     },
 
+    /**
+     * Render the translation list with all available translations
+     * @return {DOMElement} The translation list
+     */
     'renderList': function() {
         this.el = $('<div class="translation_list"><ul></ul></div>');
 
@@ -190,6 +235,10 @@ var TranslationCollection = {
         return this.el;
     },
 
+    /**
+     * Render the edit form for a translation
+     * @return {DOMElement} The form
+     */
     'renderForm': function() {
         var self = this,
             $save = $('<a href="#" class="translation_form--save btn">Save</a>'),
@@ -215,6 +264,10 @@ var TranslationCollection = {
         return this.form;
     },
 
+    /**
+     * Open the edit form for a translation
+     * @param  {Translation} translation
+     */
     'openForm': function(translation) {
         if (!translation) {
             return;
@@ -257,6 +310,9 @@ var TranslationCollection = {
         });
     },
 
+    /**
+     * The edit form save handler
+     */
     'saveForm': function() {
         var self = this,
             values = {};
@@ -278,6 +334,9 @@ var TranslationCollection = {
         });
     },
 
+    /**
+     * Close the edit form
+     */
     'closeForm': function() {
         var self = this;
 
