@@ -1,4 +1,10 @@
 
+$(document).ready(function() {
+    // Initialize the translator
+    InlineTranslatorAPI.init('/api/v1/i18n');
+    TranslationCollection.init();
+});
+
 /**
  * Translator service to communicate with the API
  */
@@ -43,119 +49,85 @@ var InlineTranslatorAPI = {
     },
 };
 
-/**
- * Opens, closes and save the translator popup
- */
-var TranslatorPopup = {
+var Translation = {
+    'key': null,
+    'currectLocale': null,
 
-    /**
-     * @var {DOMElement} elem The translation element currently active
-     */
-    elem: null,
+    'create': function(el) {
+        var translation = Object.create(Translation);
 
-    /**
-     * @var {array} inputs The input fields of all translations for this translation key
-     */
-    inputs: [],
+        translation.init(el);
 
-    /**
-     * Open the popup
-     *
-     * @param {DOMElement} elem The translation element currently active
-     * @param {string} html The html for this popup
-     */
-    open: function(elem, html) {
-        var self = this;
-        this.elem = elem;
-        $(document.body).prepend($.parseHTML(html));
-
-        // Clicking save saves and closes the popup
-        $('#save-translation').on('click', function(e) {
-            e.preventDefault();
-            self.save();
-            self.close();
-        });
-
-        // Clicking cancel closes the popup
-        $('#cancel-translation').on('click', function(e) {
-            e.preventDefault();
-            self.close();
-        });
-
-        // Clicking the popup prevents the document click event to trigger
-        $('.popup').on('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Clicking the document closes the popup
-        $(document).on('click', function(e) {
-            self.close();
-        });
-
-        // ESC key closes the popup
-        $(document).on('keydown', function(e) {
-            if (e.which == 27) {
-                self.close();
-            }
-        });
-
-        // Select the popup input of the current locale
-        $('input[data-locale=' + this.elem.data('locale') +']').select();
-
-        // Set all inputs as an object variable, which will be saved on close
-        this.inputs = $('#popup-translation input');
+        return translation;
     },
 
-    /**
-     * Save the data of the popup
-     */
-    save: function() {
-        var data = {},
-            elem = this.elem;
+    'init': function(el) {
+        this.key = el.getAttribute('data-translation-key');
+        this.currectLocale = el.getAttribute('data-locale');
+        // InlineTranslatorAPI.get(this.key).then(function())
+    },
 
-        // Create a data array for all locale inputs
-        $.each(this.inputs, function(key, input) {
-            data[input.name] = input.value;
-        });
-
-        // Post the data and set the label with the current translation
-        InlineTranslatorAPI.post(elem.data('locale'), elem.data('key'), {'translations' : data}).success(function(response) {
-            $("." + elem.data('for')).text(response.translation);
+    'saveTranslation': function(values) {
+        InlineTranslatorAPI.post(this.currentLocale, this.key, values).then(function() {
+            $('mark.inline_translation[data-translation-key="' + this.key + '"]').text(values[this.currentLocale]);
         });
     },
 
-    /**
-     * Close the popup by unregistering the events, resetting variables and removing the popup DOM
-     */
-    close: function() {
-        // Disable event listeners
-        $('#save-translation').off('click');
-        $('#cancel-translation').off('click');
-        $('.popup').off('click');
-        $(document).off('keydown');
-
-        // Reset variables
-        this.inputs = [];
-        this.elem = null;
-
-        // Remove the popup DOM
-        $('#popup-translation').remove();
+    'getForm': function() {
+        // TODO: create the form for this translation
+        // TODO: add event listener to save the translation
     },
 };
 
-$(document).ready(function() {
-    // Initialize the translator
-    InlineTranslatorAPI.init('/api/v1/i18n');
+var TranslationCollection = {
+    'translations': {},
+    'el': null,
 
-    // Add click events to all translateable elements
-    $('mark.inline__translator--toggle').on('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var elem = $(this);
+    'init': function() {
+        var translation = null,
+            self = this;
 
-        // Get the translation popup for this element's key
-        InlineTranslatorAPI.get(elem.data('key')).success(function(html) {
-            TranslatorPopup.open(elem, html);
+        $('mark.inline_translation').each(function(k, el) {
+            translation = Translation.create(el);
+
+            self.translations[translation.key] = translation;
         });
-    });
-});
+
+        this.render();
+    },
+
+    'render': function() {
+        this.el = $('<div class="translation_list"><ul></ul><div class="translation_form"><div class="translation_form--input"></div></div></div>');
+        var $translationList = this.el.find('ul');
+
+        $.each(this.translations, function(k, translation) {
+            var $translationListItem = $('<li></li>');
+
+            $translationListItem.html(translation.value + '<small>' + translation.key + '</small>');
+            $translationListItem.attr('data-translation-key', translation.key);
+            $translationList.append($translationListItem);
+
+            $translationListItem.on('mouseenter', function() {
+                $('mark.inline_translation[data-translation-key="' + translation.key + '"]').addClass('inline_translation--active');
+            });
+
+            $translationListItem.on('mouseleave', function() {
+                $('mark.inline_translation[data-translation-key="' + translation.key + '"]').removeClass('inline_translation--active');
+            });
+
+            $translationListItem.on('click', function() {
+                InlineTranslatorAPI.get(this.getAttribute('data-translation-key')).then(function(json) {
+                    $('.translation_list .translation_form .translation_form--input').empty();
+
+                    $.each(json, function(locale, data) {
+                        // TODO create form
+                    });
+                });
+            });
+
+        });
+
+        $('body').append(this.el);
+    },
+
+};

@@ -16,8 +16,8 @@ class InlineTranslator extends GenericTranslator {
      */
     public function translate($key, array $vars = null, $default = null) {
         $translation = parent::translate($key, $vars, $default);
-        $keySlug = str_replace('.', '-', $key);
-        $translation = '<mark class="inline__translator inline__translator--'.$keySlug.'">'.$translation.'</mark>&nbsp;<mark class="inline__translator inline__translator--toggle icon icon--globe" title="Click to edit ['.$key.']" data-key="'.$key.'" data-locale="'.$this->locale.'" data-for="inline__translator--'.$keySlug.'"></mark>';
+
+        $translation = "<mark title=\"{$key}\" class=\"inline_translation\" data-translation-key=\"{$key}\" data-locale=\"{$this->locale}\">{$translation}</mark>";
 
         return $translation;
     }
