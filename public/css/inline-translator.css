@@ -9,6 +9,10 @@ mark.inline_translation.inline_translation--active {
     background: #FAFF0B;
 }
 
+mark.inline_translation.pointer {
+    cursor:pointer;
+}
+
 .translation_list {
     display: block;
     position: fixed;
@@ -26,6 +30,8 @@ mark.inline_translation.inline_translation--active {
     display:block;
     margin:0;
     padding:5px 6px;
+    position:relative;
+    z-index:35;
 }
 
 .translation_list > ul > li {
@@ -42,4 +48,38 @@ mark.inline_translation.inline_translation--active {
 
 .translation_list > ul > li > small {
     display:block;
+}
+
+.translation_form {
+    display:none;
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index:40;
+    background:#d9dde0;
+    top:0;
+    left:0;
+    padding:7px 16px;
+}
+
+.translation_form.active {
+    display:block;
+}
+
+.translation_form--rows {
+    margin-top:20px;
+}
+
+.translation_form--rows > div {
+    margin-bottom:10px;
+}
+
+.translation_form label {
+    display:inline-block;
+    width:20%;
+}
+
+.translation_form input {
+    display:inline-block;
+    width:80%;
 }

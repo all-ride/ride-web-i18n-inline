@@ -45,13 +45,14 @@ var InlineTranslatorAPI = {
      * @return {Promise}
      */
     post(locale, key, translations) {
-        return $.post(this.base + '/translation/' + locale + '/' + key, translations);
+        return $.post(this.base + '/translation/' + locale + '/' + key, {"translations": translations});
     },
 };
 
 var Translation = {
     'key': null,
-    'currectLocale': null,
+    'currentLocale': null,
+    'text': null,
 
     'create': function(el) {
         var translation = Object.create(Translation);
@@ -63,19 +64,38 @@ var Translation = {
 
     'init': function(el) {
         this.key = el.getAttribute('data-translation-key');
-        this.currectLocale = el.getAttribute('data-locale');
-        // InlineTranslatorAPI.get(this.key).then(function())
+        this.currentLocale = el.getAttribute('data-locale');
+        this.text = el.innerHTML;
     },
 
-    'saveTranslation': function(values) {
+    'save': function(values) {
+        var self = this;
+
         InlineTranslatorAPI.post(this.currentLocale, this.key, values).then(function() {
-            $('mark.inline_translation[data-translation-key="' + this.key + '"]').text(values[this.currentLocale]);
+            var text = values[self.currentLocale];
+
+            $('mark.inline_translation[data-translation-key="' + self.key + '"]').text(text);
+            $('.translation_list li[data-translation-key="' + self.key + '"] span').text(text);
         });
     },
 
-    'getForm': function() {
-        // TODO: create the form for this translation
-        // TODO: add event listener to save the translation
+    'edit': function() {
+        InlineTranslatorAPI.get(this.key).then(function(json) {
+            var $form = $('.translation_form'),
+                $rows = $('.translation_form--rows'),
+                $row;
+
+            $.each(json, function(locale, data) {
+                $row = $('<div><label for="'+locale+'-'+data.key+'">'+locale+'</label><input type="text" id="'+locale+'-'+data.key+'" data-locale="'+locale+'"/></div>');
+                if (data.translation) {
+                    $row.find('input').val(data.translation);
+                }
+
+                $rows.append($row);
+            });
+
+            $form.addClass('active');
+        });
     },
 };
 
@@ -97,13 +117,17 @@ var TranslationCollection = {
     },
 
     'render': function() {
-        this.el = $('<div class="translation_list"><ul></ul><div class="translation_form"><div class="translation_form--input"></div></div></div>');
-        var $translationList = this.el.find('ul');
+        this.el = $('<div class="translation_list"><ul></ul></div>');
+        var self = this,
+            $translationList = this.el.find('ul'),
+            $form = $('<div class="translation_form"><div class="translation_form--rows"></div>'),
+            $rows = $form.find('.translation_form--rows'),
+            $save = $('<a href="#" class="translation_form--save btn">Save</a>');
 
         $.each(this.translations, function(k, translation) {
             var $translationListItem = $('<li></li>');
 
-            $translationListItem.html(translation.value + '<small>' + translation.key + '</small>');
+            $translationListItem.html('<span>' + translation.text + '</span>' + '<small>' + translation.key + '</small>');
             $translationListItem.attr('data-translation-key', translation.key);
             $translationList.append($translationListItem);
 
@@ -116,15 +140,56 @@ var TranslationCollection = {
             });
 
             $translationListItem.on('click', function() {
-                InlineTranslatorAPI.get(this.getAttribute('data-translation-key')).then(function(json) {
-                    $('.translation_list .translation_form .translation_form--input').empty();
+                $form.data('translation-key', translation.key);
+                $rows.empty();
 
-                    $.each(json, function(locale, data) {
-                        // TODO create form
-                    });
-                });
+                translation.edit();
+            });
+        });
+
+        $form.append($save);
+        $translationList.append($form);
+
+        $save.on('click', function(e) {
+            e.preventDefault();
+
+            var translation = self.translations[$form.data('translation-key')],
+                values = {};
+
+            $.each($rows.find('input'), function(k, row) {
+                values[row.getAttribute('data-locale')] = row.value;
             });
 
+            translation.save(values);
+
+            $form.removeClass('active');
+        });
+
+        $('mark.inline_translation').on('click', function(e) {
+            if (!e.altKey) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            var translation = self.translations[this.getAttribute('data-translation-key')];
+            $form.data('translation-key', translation.key);
+            $rows.empty();
+
+            translation.edit();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (!e.altKey) {
+                return;
+            }
+
+            $('mark.inline_translation').addClass('pointer');
+        });
+
+        document.addEventListener('keyup', function(e) {
+            $('mark.inline_translation.pointer').removeClass('pointer');
         });
 
         $('body').append(this.el);
