@@ -1,4 +1,9 @@
 
+document.addEventListener('DOMContentLoaded', function() {
+    InlineTranslatorAPI.init('/api/v1/i18n');
+    TranslationCollection.init();
+});
+
 /**
  * Translator service to communicate with the API
  */
@@ -39,123 +44,313 @@ var InlineTranslatorAPI = {
      * @return {Promise}
      */
     post(locale, key, translations) {
-        return $.post(this.base + '/translation/' + locale + '/' + key, translations);
+        return $.post(this.base + '/translation/' + locale + '/' + key, {"translations": translations});
     },
 };
 
 /**
- * Opens, closes and save the translator popup
+ * A translation
+ * @type {Object}
  */
-var TranslatorPopup = {
+var Translation = {
+    /**
+     * @type {String}
+     */
+    'key': null,
 
     /**
-     * @var {DOMElement} elem The translation element currently active
+     * @type {String}
      */
-    elem: null,
+    'currentLocale': null,
 
     /**
-     * @var {array} inputs The input fields of all translations for this translation key
+     * @type {String}
      */
-    inputs: [],
+    'text': null,
 
     /**
-     * Open the popup
-     *
-     * @param {DOMElement} elem The translation element currently active
-     * @param {string} html The html for this popup
+     * Create and return a new Translation from a DOM element
+     * @param  {DOMElement} el
+     * @return {Translation}
      */
-    open: function(elem, html) {
-        var self = this;
-        this.elem = elem;
-        $(document.body).prepend($.parseHTML(html));
+    'create': function(el) {
+        var translation = Object.create(Translation);
 
-        // Clicking save saves and closes the popup
-        $('#save-translation').on('click', function(e) {
-            e.preventDefault();
-            self.save();
-            self.close();
-        });
+        translation.init(el);
 
-        // Clicking cancel closes the popup
-        $('#cancel-translation').on('click', function(e) {
-            e.preventDefault();
-            self.close();
-        });
-
-        // Clicking the popup prevents the document click event to trigger
-        $('.popup').on('click', function(e) {
-            e.stopPropagation();
-        });
-
-        // Clicking the document closes the popup
-        $(document).on('click', function(e) {
-            self.close();
-        });
-
-        // ESC key closes the popup
-        $(document).on('keydown', function(e) {
-            if (e.which == 27) {
-                self.close();
-            }
-        });
-
-        // Select the popup input of the current locale
-        $('input[data-locale=' + this.elem.data('locale') +']').select();
-
-        // Set all inputs as an object variable, which will be saved on close
-        this.inputs = $('#popup-translation input');
+        return translation;
     },
 
     /**
-     * Save the data of the popup
+     * Initialize a new Translation
+     * @param  {DOMElement} el
      */
-    save: function() {
-        var data = {},
-            elem = this.elem;
-
-        // Create a data array for all locale inputs
-        $.each(this.inputs, function(key, input) {
-            data[input.name] = input.value;
-        });
-
-        // Post the data and set the label with the current translation
-        InlineTranslatorAPI.post(elem.data('locale'), elem.data('key'), {'translations' : data}).success(function(response) {
-            $("." + elem.data('for')).text(response.translation);
-        });
+    'init': function(el) {
+        this.key = el.getAttribute('data-translation-key');
+        this.currentLocale = el.getAttribute('data-locale');
+        this.text = el.innerHTML;
     },
 
     /**
-     * Close the popup by unregistering the events, resetting variables and removing the popup DOM
+     * Save this translation
+     * @param  {object} values
+     * @return {Promise}
      */
-    close: function() {
-        // Disable event listeners
-        $('#save-translation').off('click');
-        $('#cancel-translation').off('click');
-        $('.popup').off('click');
-        $(document).off('keydown');
-
-        // Reset variables
-        this.inputs = [];
-        this.elem = null;
-
-        // Remove the popup DOM
-        $('#popup-translation').remove();
+    'save': function(values) {
+        return InlineTranslatorAPI.post(this.currentLocale, this.key, values);
     },
+
+    'highlight': function(enable) {
+        if (enable === undefined || enable) {
+            $('mark.inline_translation[data-translation-key="' + this.key + '"]').addClass('inline_translation--active');
+        } else {
+            $('mark.inline_translation[data-translation-key="' + this.key + '"]').removeClass('inline_translation--active');
+        }
+    }
 };
 
-$(document).ready(function() {
-    // Initialize the translator
-    InlineTranslatorAPI.init('/api/v1/i18n');
+/**
+ * @type {Object}
+ */
+var TranslationCollection = {
+    /**
+     * A collection of all avaiable translations
+     * @type {Object}
+     */
+    'translations': {},
 
-    // Add click events to all translateable elements
-    $('mark.inline__translator--toggle').on('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var elem = $(this);
+    /**
+     * The DOM element containing the translation list
+     * @type {DOMElement}
+     */
+    'el': null,
 
-        // Get the translation popup for this element's key
-        InlineTranslatorAPI.get(elem.data('key')).success(function(html) {
-            TranslatorPopup.open(elem, html);
+    /**
+     * The DOM element containing the edit form
+     * @type {DOMElement}
+     */
+    'form': null,
+
+    /**
+     * The DOM element containing the edit form rows
+     * @type {DOMElement}
+     */
+    'rows': null,
+
+    /**
+     * The DOM element containing the edit form actions
+     * @type {DOMElement}
+     */
+    'formActions': null,
+
+    /**
+     * The translation which is currently edited
+     * @type {Translation}
+     */
+    'translationEdit': null,
+
+    /**
+     * The promise which is resolved after successfull loading of a translation
+     * @type {Promise}
+     */
+    'promise': null,
+
+    /**
+     * Initialize the TranslationCollection
+     */
+    'init': function() {
+        var translation = null,
+            $labels = $('mark.inline_translation'),
+            self = this;
+
+        if (!$labels.length) {
+            return;
+        }
+
+        $labels.each(function(k, el) {
+            translation = Translation.create(el);
+
+            self.translations[translation.key] = translation;
         });
-    });
-});
+
+        document.addEventListener('keydown', function(e) {
+            if (!e.altKey) {
+                return;
+            }
+
+            $labels.addClass('pointer');
+        });
+
+        document.addEventListener('keyup', function(e) {
+            $labels.removeClass('pointer');
+        });
+
+        $('mark.inline_translation').on('click', function(e) {
+            if (!e.altKey) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            self.openForm(self.translations[this.getAttribute('data-translation-key')]);
+        });
+
+        $('body').append(this.renderList());
+    },
+
+    /**
+     * Render the translation list with all available translations
+     * @return {DOMElement} The translation list
+     */
+    'renderList': function() {
+        this.el = $('<div class="translation_list"><ul></ul></div>');
+
+        var self = this,
+            $translationList = this.el.find('ul');
+
+        $.each(this.translations, function(k, translation) {
+            var $translationListItem = $('<li></li>');
+
+            $translationListItem.html('<span>' + translation.text + '</span>' + '<small>' + translation.key + '</small>');
+            $translationListItem.attr('data-translation-key', translation.key);
+            $translationList.append($translationListItem);
+
+            $translationListItem.on('mouseenter', function() {
+                translation.highlight();
+            });
+
+            $translationListItem.on('mouseleave', function() {
+                translation.highlight(false);
+            });
+
+            $translationListItem.on('click', function() {
+                $translationListItem.off('mouseleave');
+                self.openForm(translation);
+            });
+        });
+
+        this.el.append(this.renderForm());
+
+        return this.el;
+    },
+
+    /**
+     * Render the edit form for a translation
+     * @return {DOMElement} The form
+     */
+    'renderForm': function() {
+        var self = this,
+            $save = $('<a href="#" class="translation_form--save btn">Save</a>'),
+            $cancel = $('<a href="#" class="translation_form--cancel">Cancel</a>');
+
+        this.form = $('<div class="translation_form"><h3></h3><div class="translation_form--rows"></div><div class="translation_form--actions"></div></div>');
+        this.rows = this.form.find('.translation_form--rows');
+        this.formActions = this.form.find('.translation_form--actions');
+
+        this.formActions.append($save);
+        this.formActions.append($cancel);
+
+        $save.on('click', function(e) {
+            e.preventDefault();
+            self.saveForm(self.translations[self.form.data('translation-key')])
+        });
+
+        $cancel.on('click', function(e){
+            e.preventDefault();
+            self.closeForm();
+        });
+
+        return this.form;
+    },
+
+    /**
+     * Open the edit form for a translation
+     * @param  {Translation} translation
+     */
+    'openForm': function(translation) {
+        if (!translation) {
+            return;
+        }
+
+        this.promise = $.Deferred();
+
+        var self = this,
+            key = translation.key;
+
+        this.form.data('translation-key', key);
+        this.form.find('h3').text(key);
+        this.rows.empty();
+
+        InlineTranslatorAPI.get(key).then(function(json) {
+            self.translationEdit = translation;
+            self.promise.resolve();
+            var $row;
+
+            $.each(json, function(locale, data) {
+                $row = $('<div><label for="'+locale+'-'+data.key+'">'+locale+'</label><input type="text" id="'+locale+'-'+data.key+'" data-locale="'+locale+'"/></div>');
+                if (data.translation) {
+                    $row.find('input').val(data.translation);
+                }
+
+                $row.on('keydown', function(e) {
+                    if (e.keyCode === 13) {
+                        self.saveForm(translation);
+                    } else if (e.keyCode === 27) {
+                        self.closeForm();
+                    }
+                });
+
+                self.rows.append($row);
+            });
+
+            self.el.addClass('edit');
+            self.rows.find('input').first().focus().select();
+            translation.highlight();
+        });
+    },
+
+    /**
+     * The edit form save handler
+     */
+    'saveForm': function() {
+        var self = this,
+            values = {};
+
+        $.when(this.promise).then(function() {
+            $.each(self.rows.find('input'), function(k, row) {
+                values[row.getAttribute('data-locale')] = row.value;
+            });
+
+            self.translationEdit.save(values).then(function() {
+                var text = values[self.translationEdit.currentLocale],
+                    $translationListItem = $('.translation_list li[data-translation-key="' + self.translationEdit.key + '"]');
+
+                $('mark.inline_translation[data-translation-key="' + self.translationEdit.key + '"]').text(text);
+                $translationListItem.find('span').text(text);
+
+                self.closeForm();
+            });
+        });
+    },
+
+    /**
+     * Close the edit form
+     */
+    'closeForm': function() {
+        var self = this;
+        $translationListItem = $('.translation_list li[data-translation-key="' + this.translationEdit.key + '"]');
+
+        this.translationEdit.highlight(false);
+        this.el.removeClass('edit');
+        this.translationEdit = null;
+
+        $translationListItem.on('mouseleave', function() {
+            var translation = self.translations[$translationListItem.data('translation-key')];
+
+            if (translation) {
+                translation.highlight(false);
+            }
+        });
+    },
+};

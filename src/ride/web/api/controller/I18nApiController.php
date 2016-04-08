@@ -51,18 +51,15 @@ class I18nApiController extends AbstractController {
         $locales = $this->i18n->getLocales();
 
         foreach($locales as $locale=>$value) {
-            $translations[] = array(
-                "key" => $key,
-                "code" => $locale,
-                "locale" => $this->i18n->getLocale($locale)->getName(),
-                "translation" => $this->i18n->getTranslator($locale)->getTranslation($key)
+            $translations[$locale] = array(
+                'key' => $key,
+                'code' => $locale,
+                'locale' => $this->i18n->getLocale($locale)->getName(),
+                'translation' => $this->i18n->getTranslator($locale)->getTranslation($key)
             );
         }
 
-        $this->setTemplateView('popup/translator.popup', array(
-            'translations' => $translations,
-            'key' => $key)
-        );
+        $this->setJsonView($translations);
     }
 
     /**
