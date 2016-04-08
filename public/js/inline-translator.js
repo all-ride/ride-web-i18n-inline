@@ -69,6 +69,11 @@ var Translation = {
     'text': null,
 
     /**
+     * @type {DOMElement}
+     */
+    'editElement': null,
+
+    /**
      * Create and return a new Translation from a DOM element
      * @param  {DOMElement} el
      * @return {Translation}
@@ -97,6 +102,8 @@ var Translation = {
      * @return {Promise}
      */
     'save': function(values) {
+        this.text = values[this.currentLocale];
+
         return InlineTranslatorAPI.post(this.currentLocale, this.key, values);
     },
 
@@ -207,7 +214,26 @@ var TranslationCollection = {
         this.el = $('<div class="translation_list"><ul></ul></div>');
 
         var self = this,
-            $translationList = this.el.find('ul');
+            $translationList = this.el.find('ul'),
+            $translationTools = $('<div class="translation_list--tools"></div>'),
+            $toggleTranslated = $('<input type="checkbox" id="translation_list--togle-translated"/> <label for="translation_list--togle-translated">Hide translated</label>');
+
+        $translationTools.append($toggleTranslated);
+        $translationList.append($translationTools);
+
+        $toggleTranslated.on('change', function() {
+            var show = this.checked;
+
+            $.each(self.translations, function(k, translation) {
+                if (translation.text != '[' + translation.key + ']') {
+                    if (show) {
+                        translation.editElement.hide();
+                    } else {
+                        translation.editElement.show();
+                    }
+                }
+            });
+        });
 
         $.each(this.translations, function(k, translation) {
             var $translationListItem = $('<li></li>');
@@ -228,6 +254,8 @@ var TranslationCollection = {
                 $translationListItem.off('mouseleave');
                 self.openForm(translation);
             });
+
+            translation.editElement = $translationListItem;
         });
 
         this.el.append(this.renderForm());
