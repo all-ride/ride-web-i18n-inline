@@ -18,3 +18,11 @@ A user has to be logged in and have the right permissions in order to use this m
 ![Translation toggle button](/public/img/img-1.png?raw=true "Toggle the inline translator")
 
 You can now toggle the translator in the top menu in the backend.
+
+![Translation interface](/public/img/img-2.png?raw=true "The translation interface")
+
+When the translator is enabled, you'll see the translation interface in the bottom left corner. You can click a translation to edit it.
+
+![Highlighted translation](/public/img/img-3.png?raw=true "A highlighted label")
+
+When editing a translation, all labels using that translation will be highlighted. It's also possible to alt+click a translation to quickly open the edit window.
