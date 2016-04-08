@@ -17,7 +17,7 @@
         "psr-0": {
             "ride\\library\\i18n\\": ["src/"],
             "ride\\web\\listener\\": ["src/"],
-            "ride\\web\\rest\\": ["src/"]
+            "ride\\web\\api\\": ["src/"]
         }
     }
 }
