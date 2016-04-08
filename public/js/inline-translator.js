@@ -339,22 +339,18 @@ var TranslationCollection = {
      */
     'closeForm': function() {
         var self = this;
+        $translationListItem = $('.translation_list li[data-translation-key="' + this.translationEdit.key + '"]');
 
-        $.when(this.promise).then(function() {
-            $translationListItem = $('.translation_list li[data-translation-key="' + self.translationEdit.key + '"]');
+        this.translationEdit.highlight(false);
+        this.el.removeClass('edit');
+        this.translationEdit = null;
 
-            self.translationEdit.highlight(false);
-            self.el.removeClass('edit');
+        $translationListItem.on('mouseleave', function() {
+            var translation = self.translations[$translationListItem.data('translation-key')];
 
-            self.translationEdit = null;
-
-            $translationListItem.on('mouseleave', function() {
-                var translation = self.translations[$translationListItem.data('translation-key')];
-
-                if (translation) {
-                    translation.highlight(false);
-                }
-            });
+            if (translation) {
+                translation.highlight(false);
+            }
         });
     },
 };
