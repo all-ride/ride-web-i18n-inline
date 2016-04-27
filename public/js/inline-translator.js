@@ -192,7 +192,9 @@ var TranslationCollection = {
             $labels.removeClass('pointer');
         });
 
-        $('mark.inline_translation').on('click', function(e) {
+        $('mark.inline_translation').on('click', onTranslationClick);
+
+        var onTranslationClick = function(e) {
             if (!e.altKey) {
                 return;
             }
@@ -201,6 +203,23 @@ var TranslationCollection = {
             e.stopPropagation();
 
             self.openForm(self.translations[this.getAttribute('data-translation-key')]);
+        };
+
+        $(document).on('collectionAdded', function (e) {
+            var $translationList = self.el.find('ul');
+
+            $('mark.inline_translation').on('click', onTranslationClick);
+
+            var $collectionLabels = $(e.target).find('.collection-control:last-child').find('mark.inline_translation');
+            $collectionLabels.each(function(k, el) {
+                if (self.translations[el.getAttribute('data-translation-key')]) {
+                    return;
+                }
+
+                var translation = Translation.create(el);
+                $translationList.append(self.renderListItem(translation));
+                self.translations[translation.key] = translation;
+            });
         });
 
         $('body').append(this.renderList());
@@ -236,31 +255,36 @@ var TranslationCollection = {
         });
 
         $.each(this.translations, function(k, translation) {
-            var $translationListItem = $('<li></li>');
-
-            $translationListItem.html('<span>' + translation.text + '</span>' + '<small>' + translation.key + '</small>');
-            $translationListItem.attr('data-translation-key', translation.key);
-            $translationList.append($translationListItem);
-
-            $translationListItem.on('mouseenter', function() {
-                translation.highlight();
-            });
-
-            $translationListItem.on('mouseleave', function() {
-                translation.highlight(false);
-            });
-
-            $translationListItem.on('click', function() {
-                $translationListItem.off('mouseleave');
-                self.openForm(translation);
-            });
-
-            translation.editElement = $translationListItem;
+            $translationList.append(self.renderListItem(translation));
         });
 
         this.el.append(this.renderForm());
 
         return this.el;
+    },
+
+    'renderListItem': function (translation) {
+        var $translationListItem = $('<li></li>');
+
+        $translationListItem.html('<span>' + translation.text + '</span>' + '<small>' + translation.key + '</small>');
+        $translationListItem.attr('data-translation-key', translation.key);
+
+        $translationListItem.on('mouseenter', function() {
+            translation.highlight();
+        });
+
+        $translationListItem.on('mouseleave', function() {
+            translation.highlight(false);
+        });
+
+        $translationListItem.on('click', function() {
+            $translationListItem.off('mouseleave');
+            self.openForm(translation);
+        });
+
+        translation.editElement = $translationListItem;
+
+        return $translationListItem;
     },
 
     /**
