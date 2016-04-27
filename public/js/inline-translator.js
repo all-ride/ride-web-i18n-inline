@@ -43,8 +43,57 @@ var InlineTranslatorAPI = {
      *
      * @return {Promise}
      */
-    post(locale, key, translations) {
-        return $.post(this.base + '/translation/' + locale + '/' + key, {"translations": translations});
+    post(translation) {
+        var payload = this.getPatchTranslationPayload(translation);
+
+        return $.ajax('/api/v1/translations', {
+            method: 'PATCH',
+            data: payload,
+        });
+    },
+
+    getPostTranslationPayload(translation) {
+        var payload = {
+            data: [],
+        };
+
+        for (var locale in translation.values) {
+            payload.data.push({
+                type: 'translations',
+                attributes: {
+                    key: translation.key,
+                    value: translation.values[locale],
+                },
+                relationships: {
+                    locale: {
+                        data: {
+                            type: 'locales',
+                            id: locale
+                        }
+                    }
+                }
+            });
+        }
+
+        return JSON.stringify(payload);
+    },
+
+    getPatchTranslationPayload(translation) {
+        var payload = {
+            data: [],
+        };
+
+        for (var locale in translation.values) {
+            payload.data.push({
+                type: 'translations',
+                id: locale + '-' + translation.key,
+                attributes: {
+                    value: translation.values[locale],
+                },
+            });
+        }
+
+        return JSON.stringify(payload);
     },
 };
 
@@ -103,8 +152,9 @@ var Translation = {
      */
     'save': function(values) {
         this.text = values[this.currentLocale];
+        this.values = values;
 
-        return InlineTranslatorAPI.post(this.currentLocale, this.key, values);
+        return InlineTranslatorAPI.post(this);
     },
 
     'highlight': function(enable) {
