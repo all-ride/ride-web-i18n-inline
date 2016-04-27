@@ -192,8 +192,6 @@ var TranslationCollection = {
             $labels.removeClass('pointer');
         });
 
-        $('mark.inline_translation').on('click', onTranslationClick);
-
         var onTranslationClick = function(e) {
             if (!e.altKey) {
                 return;
@@ -204,6 +202,8 @@ var TranslationCollection = {
 
             self.openForm(self.translations[this.getAttribute('data-translation-key')]);
         };
+
+        $('mark.inline_translation').on('click', onTranslationClick);
 
         $(document).on('collectionAdded', function (e) {
             var $translationList = self.el.find('ul');
@@ -277,6 +277,7 @@ var TranslationCollection = {
             translation.highlight(false);
         });
 
+        var self = this;
         $translationListItem.on('click', function() {
             $translationListItem.off('mouseleave');
             self.openForm(translation);
