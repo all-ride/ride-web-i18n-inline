@@ -123,6 +123,11 @@ var Translation = {
     'editElement': null,
 
     /**
+     * @type {Array}
+     */
+    'values': [],
+
+    /**
      * Create and return a new Translation from a DOM element
      * @param  {DOMElement} el
      * @return {Translation}
@@ -287,15 +292,17 @@ var TranslationCollection = {
         var self = this,
             $translationList = this.el.find('ul'),
             $translationTools = $('<div class="translation_list--tools"></div>'),
-            $toggleTranslated = $('<input type="checkbox" id="translation_list--togle-translated"/> <label for="translation_list--togle-translated">Hide translated</label>');
+            $toggleTranslated = $('<div class="row"><input type="checkbox" id="translation_list--togle-translated"/> <label for="translation_list--togle-translated">Hide translated</label></div>');
+            $searchBox = $('<div class="row"><input type="text" id="translation_list--search" placeholder="search" /></div>');
 
         $translationTools.append($toggleTranslated);
+        $translationTools.append($searchBox);
         $translationList.append($translationTools);
 
-        $toggleTranslated.on('change', function() {
+        $toggleTranslated.find('input').on('change', function() {
             var show = this.checked;
 
-            $.each(self.translations, function(k, translation) {
+            $.each(self.translations, function (k, translation) {
                 if (translation.text != '[' + translation.key + ']') {
                     if (show) {
                         translation.editElement.hide();
@@ -306,9 +313,24 @@ var TranslationCollection = {
             });
         });
 
+        $searchBox.find('input').on('keyup', function () {
+            var search = this.value;
+
+            $.each(self.translations, function (k, translation) {
+                var searchMatch = search === '' ||  translation.key.indexOf(search) !== -1 || translation.text.indexOf(search) !== -1;
+
+                if (!searchMatch) {
+                    translation.editElement.hide();
+                } else {
+                    translation.editElement.show();
+                }
+            });
+        });
+
         $.each(this.translations, function(k, translation) {
             $translationList.append(self.renderListItem(translation));
         });
+
 
         this.el.append(this.renderForm());
 
