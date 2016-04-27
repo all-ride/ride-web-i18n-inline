@@ -158,6 +158,8 @@ var Translation = {
     },
 
     'highlight': function(enable) {
+        $('mark.inline_translation').removeClass('inline_translation--active');
+
         if (enable === undefined || enable) {
             $('mark.inline_translation[data-translation-key="' + this.key + '"]').addClass('inline_translation--active');
         } else {
