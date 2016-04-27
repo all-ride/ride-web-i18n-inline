@@ -108,7 +108,18 @@ mark.inline_translation.pointer {
 }
 
 .translation_list--tools {
-    padding:20px 8px;
+    padding:5px 8px 8px 8px;
     margin-bottom:3px;
     background:#d9dde0;
+}
+
+.translation_list--tools > .row {
+    margin-top:3px;
+    margin-bottom:2px;
+}
+
+.translation_list--tools > .row > input[type="text"] {
+    width:100%;
+    display:inline-block;
+    padding:3px 2px;
 }
