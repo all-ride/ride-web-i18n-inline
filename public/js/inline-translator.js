@@ -44,12 +44,23 @@ var InlineTranslatorAPI = {
      * @return {Promise}
      */
     post(translation) {
-        var payload = this.getPatchTranslationPayload(translation);
+        return $.post(this.base + '/translation/' + translation.currentLocale + '/' + translation.key, {"translations": translation.values});
 
-        return $.ajax('/api/v1/translations', {
-            method: 'PATCH',
-            data: payload,
-        });
+        // var payload = this.getPatchTranslationPayload(translation);
+        // var postPayload = this.getPostTranslationPayload(translation);
+
+        // return $.ajax('/api/v1/translations', {
+        //     method: 'PATCH',
+        //     contentType: 'application/json',
+        //     data: payload,
+        //     error: function() {
+        //         $.ajax('/api/v1/translations', {
+        //             contentType: 'application/json',
+        //             method: 'POST',
+        //             data: postPayload,
+        //         })
+        //     }
+        // });
     },
 
     getPostTranslationPayload(translation) {

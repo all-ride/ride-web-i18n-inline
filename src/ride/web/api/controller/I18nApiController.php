@@ -63,6 +63,29 @@ class I18nApiController extends AbstractController {
     }
 
     /**
+     * Post a translated key
+     *
+     * @param string $key The translation key
+     *
+     * @return JsonView
+     */
+    public function postTranslation($locale, $key) {
+        $translations = $this->request->getBodyParameter('translations');
+
+        foreach($translations as $translationLocale => $translation) {
+            if (!$translation) {
+                continue;
+            }
+
+            $this->i18n->getTranslator($translationLocale)->setTranslation($key, $translation);
+        }
+
+        $this->setJsonView(
+            array('translation' => $this->i18n->getTranslator($locale)->getTranslation($key))
+        );
+    }
+
+    /**
      * Toggle the translator for the current user
      */
     public function toggleTranslator() {
