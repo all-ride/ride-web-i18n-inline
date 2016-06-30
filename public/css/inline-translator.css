@@ -1,3 +1,9 @@
+[title*="<mark"],
+[name*="<mark"] {
+    background: red;
+    display: none !important;
+}
+
 mark.inline_translation {
     background:inherit;
     color:inherit;
