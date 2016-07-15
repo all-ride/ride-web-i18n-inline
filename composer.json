@@ -2,7 +2,7 @@
     "name": "ride/web-i18n-inline",
     "description": "Inline translator",
     "license": "MIT",
-    "version": "0.1.5",
+    "version": "0.1.7",
     "authors": [
         {
             "name": "Brent Roose",

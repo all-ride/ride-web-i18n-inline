@@ -12,14 +12,14 @@ var InlineTranslatorAPI = {
     /**
      * @var {string} base The API base URL
      */
-    base: null,
+    'base': null,
 
     /**
      * Initialize the Inline Translator API service
      *
      * @param {string} base The API base URL
      */
-    init: function(base) {
+    'init': function(base) {
         this.base = base;
     },
 
@@ -30,7 +30,7 @@ var InlineTranslatorAPI = {
      *
      * @return {Promise}
      */
-    get(key) {
+    'get': function(key) {
         return $.get(this.base + '/translation/' + key);
     },
 
@@ -43,7 +43,7 @@ var InlineTranslatorAPI = {
      *
      * @return {Promise}
      */
-    post(translation) {
+    'post': function(translation) {
         return $.post(this.base + '/translation/' + translation.currentLocale + '/' + translation.key, {"translations": translation.values});
 
         // var payload = this.getPatchTranslationPayload(translation);
@@ -63,7 +63,7 @@ var InlineTranslatorAPI = {
         // });
     },
 
-    getPostTranslationPayload(translation) {
+    'getPostTranslationPayload': function(translation) {
         var payload = {
             data: [],
         };
@@ -89,7 +89,7 @@ var InlineTranslatorAPI = {
         return JSON.stringify(payload);
     },
 
-    getPatchTranslationPayload(translation) {
+    'getPatchTranslationPayload': function(translation) {
         var payload = {
             data: [],
         };

@@ -28,14 +28,18 @@ class I18nApplicationListener {
      *
      * @param Event $event
      */
-    public function loadScripts(Event $event, Request $request) {
+    public function loadScripts(Event $event, Request $request, SecurityManager $securityManager) {
         $view = $event->getArgument('web')->getResponse()->getView();
 
         if (!($view instanceof TemplateView)) {
             return;
         }
 
-        // Add translator CSS and JavaScript
+        $user = $securityManager->getUser();
+        if (!$user || !$securityManager->isPermissionGranted('permission.i18n.inline.translate')) {
+            return;
+        }
+
         $view->addStyle($request->getBaseUrl().'/css/inline-translator.css');
         $view->addJavascript($request->getBaseUrl().'/js/inline-translator.js');
     }
