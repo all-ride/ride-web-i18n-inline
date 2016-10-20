@@ -28,10 +28,15 @@ class I18nApplicationListener {
      *
      * @param Event $event
      */
-    public function loadScripts(Event $event, Request $request) {
+    public function loadScripts(Event $event, SecurityManager $securityManager, Request $request) {
         $view = $event->getArgument('web')->getResponse()->getView();
 
         if (!($view instanceof TemplateView)) {
+            return;
+        }
+
+        $user = $securityManager->getUser();
+        if (!$user || !$securityManager->isPermissionGranted('permission.i18n.inline.translate') || !$user->getPreference('translator')) {
             return;
         }
 
