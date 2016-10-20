@@ -36,7 +36,7 @@ class I18nApplicationListener {
         }
 
         $user = $securityManager->getUser();
-        if (!$user || !$securityManager->isPermissionGranted('permission.i18n.inline.translate')) {
+        if (!$user || !$securityManager->isPermissionGranted('permission.i18n.inline.translate') || ($user && !$user->getPreference('translator'))) {
             return;
         }
 
