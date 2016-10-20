@@ -28,9 +28,8 @@ class I18nApplicationListener {
      *
      * @param Event $event
      */
-    public function loadScripts(Event $event, Request $request, SecurityManager $securityManager) {
-        $view = $event->getArgument('web')->getResponse()->getView();
-
+    public function loadScripts(Event $event, SecurityManager $securityManager, Request $request) {
+        $view = $request->getView();
         if (!($view instanceof TemplateView)) {
             return;
         }
@@ -40,6 +39,7 @@ class I18nApplicationListener {
             return;
         }
 
+        // Add translator CSS and JavaScript
         $view->addStyle($request->getBaseUrl().'/css/inline-translator.css');
         $view->addJavascript($request->getBaseUrl().'/js/inline-translator.js');
     }
