@@ -29,7 +29,7 @@ class I18nApplicationListener {
      * @param Event $event
      */
     public function loadScripts(Event $event, SecurityManager $securityManager, Request $request) {
-        $view = $request->getView();
+        $view = $event->getArgument('web')->getResponse()->getView();
         if (!($view instanceof TemplateView)) {
             return;
         }
