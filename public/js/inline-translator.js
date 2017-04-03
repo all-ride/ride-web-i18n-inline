@@ -138,6 +138,8 @@ var Translation = {
      */
     'values': [],
 
+    'editing': false,
+
     /**
      * Create and return a new Translation from a DOM element
      * @param  {DOMElement} el
@@ -407,10 +409,11 @@ var TranslationCollection = {
      * @param  {Translation} translation
      */
     'openForm': function(translation) {
-        if (!translation) {
+        if (!translation || this.editing) {
             return;
         }
 
+        this.editing = true;
         this.promise = $.Deferred();
 
         var self = this,
@@ -418,11 +421,11 @@ var TranslationCollection = {
 
         this.form.data('translation-key', key);
         this.form.find('h3').text(key);
+        this.rows.empty();
 
         InlineTranslatorAPI.get(key).then(function(json) {
             self.translationEdit = translation;
             self.promise.resolve();
-            self.rows.empty();
             var $row;
 
             $.each(json, function(locale, data) {
@@ -482,6 +485,7 @@ var TranslationCollection = {
         this.translationEdit.highlight(false);
         this.el.removeClass('edit');
         this.translationEdit = null;
+        this.editing = false;
 
         $translationListItem.on('mouseleave', function() {
             var translation = self.translations[$translationListItem.data('translation-key')];
