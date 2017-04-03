@@ -418,11 +418,11 @@ var TranslationCollection = {
 
         this.form.data('translation-key', key);
         this.form.find('h3').text(key);
-        this.rows.empty();
 
         InlineTranslatorAPI.get(key).then(function(json) {
             self.translationEdit = translation;
             self.promise.resolve();
+            self.rows.empty();
             var $row;
 
             $.each(json, function(locale, data) {
